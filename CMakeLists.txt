@@ -6,6 +6,12 @@ if(CMAKE_CROSSCOMPILING)
   set(__CMAKE_CROSSCOMPILING_OVERRIDE ON)
 endif()
 
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.23.142.tar.gz"
+    SHA1 "1d841ca74150c92054896a7f6d88a123dd9e615d"
+)
+
 project(mxnet C CXX)
 
 if(__CMAKE_CROSSCOMPILING_OVERRIDE)
