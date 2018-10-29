@@ -39,9 +39,18 @@ if(BLAS STREQUAL "Atlas" OR BLAS STREQUAL "atlas")
   add_definitions(-DMSHADOW_USE_MKL=0)
   add_definitions(-DMXNET_USE_BLAS_ATLAS=1)
 elseif(BLAS STREQUAL "Open" OR BLAS STREQUAL "open")
+  if(HUNTER_ENABLED)
+    hunter_add_package(OpenBLAS)
+    find_package(OpenBLAS CONFIG REQUIRED)
+    list(APPEND mshadow_LINKER_LIBS OpenBLAS::OpenBLAS)
+  else()
+
   find_package(OpenBLAS REQUIRED)
   include_directories(SYSTEM ${OpenBLAS_INCLUDE_DIR})
   list(APPEND mshadow_LINKER_LIBS ${OpenBLAS_LIB})
+
+  endif()
+
   add_definitions(-DMSHADOW_USE_CBLAS=1)
   add_definitions(-DMSHADOW_USE_MKL=0)
   add_definitions(-DMXNET_USE_BLAS_OPEN=1)
