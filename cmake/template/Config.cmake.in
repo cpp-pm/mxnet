@@ -25,5 +25,9 @@ if("@USE_CUDA@" AND "@FIRST_CUDA@")
   endif()
 endif()
 
+if(@USE_OPENCV@)
+  find_package(OpenCV CONFIG REQUIRED)
+endif()
+
 include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
 check_required_components("@PROJECT_NAME@")
