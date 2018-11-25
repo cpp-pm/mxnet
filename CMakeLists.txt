@@ -527,6 +527,17 @@ endif()
 FILE(GLOB_RECURSE SOURCE "src/*.cc" "src/*.h" "include/*.h")
 FILE(GLOB_RECURSE CUDA "src/*.cu" "src/*.cuh")
 
+if(HUNTER_ENABLED)
+  hunter_add_package(tvm)
+  find_package(tvm CONFIG REQUIRED)
+
+  FILE(GLOB_RECURSE NNVMSOURCE
+    ${TVM_ROOT}/src/tvm/nnvm/c_api/*.cc
+    ${TVM_ROOT}/src/tvm/nnvm/core/*.cc
+    ${TVM_ROOT}/src/tvm/nnvm/pass/*.cc
+  )
+else()
+
 # add nnvm to source
 FILE(GLOB_RECURSE NNVMSOURCE
   3rdparty/tvm/nnvm/src/c_api/*.cc
@@ -536,6 +547,9 @@ FILE(GLOB_RECURSE NNVMSOURCE
   3rdparty/tvm/nnvm/src/core/*.h
   3rdparty/tvm/nnvm/src/pass/*.h
   3rdparty/tvm/nnvm/include/*.h)
+
+endif()
+
 list(APPEND SOURCE ${NNVMSOURCE})
 
 # add mshadow file
@@ -724,10 +738,6 @@ if(UNIX)
     hunter_add_package(dmlc-core)
     find_package(dmlc CONFIG REQUIRED)
     target_link_libraries(mxnet PUBLIC dmlc::dmlc)
-
-    hunter_add_package(tvm)
-    find_package(tvm CONFIG REQUIRED)
-    target_link_libraries(mxnet PUBLIC tvm::nnvm_compiler)
 
     hunter_add_package(mshadow)
     find_package(mshadow CONFIG REQUIRED)
