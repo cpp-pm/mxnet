@@ -469,6 +469,7 @@ if(USE_CUDNN AND USE_CUDA)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/cmake)
+  set(FOPEN_64_PRESENT YES CACHE BOOL "..." FORCE) # Hack
   add_subdirectory("3rdparty/dmlc-core")
 endif()
 
