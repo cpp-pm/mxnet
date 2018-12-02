@@ -565,14 +565,29 @@ FILE(GLOB_RECURSE SOURCE "src/*.cc" "src/*.h" "include/*.h")
 FILE(GLOB_RECURSE CUDA "src/*.cu" "src/*.cuh")
 
 if(HUNTER_ENABLED)
-  hunter_add_package(tvm)
-  find_package(tvm CONFIG REQUIRED)
+  if(TARGET tvm)
+    if("${TVM_TOP_DIR}" STREQUAL "")
+      message(FATAL_ERROR "TVM_TOP_DIR is empty")
+    endif()
 
-  FILE(GLOB_RECURSE NNVMSOURCE
-    ${TVM_ROOT}/src/tvm/nnvm/c_api/*.cc
-    ${TVM_ROOT}/src/tvm/nnvm/core/*.cc
-    ${TVM_ROOT}/src/tvm/nnvm/pass/*.cc
-  )
+    include_directories(${TVM_TOP_DIR}/include)
+    include_directories(${TVM_TOP_DIR}/nnvm/include)
+
+    FILE(GLOB_RECURSE NNVMSOURCE
+      ${TVM_TOP_DIR}/nnvm/src/c_api/*.cc
+      ${TVM_TOP_DIR}/nnvm/src/core/*.cc
+      ${TVM_TOP_DIR}/nnvm/src/pass/*.cc
+    )
+  else()
+    hunter_add_package(tvm)
+    find_package(tvm CONFIG REQUIRED)
+
+    FILE(GLOB_RECURSE NNVMSOURCE
+      ${TVM_ROOT}/src/tvm/nnvm/c_api/*.cc
+      ${TVM_ROOT}/src/tvm/nnvm/core/*.cc
+      ${TVM_ROOT}/src/tvm/nnvm/pass/*.cc
+    )
+  endif()
 else()
 
 # add nnvm to source
