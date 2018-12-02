@@ -274,11 +274,11 @@ if(USE_MKLDNN)
   else()
 
   add_subdirectory(3rdparty/mkldnn)
+  include_directories(3rdparty/mkldnn/include)
+  include_directories(${PROJECT_BINARY_DIR}/3rdparty/mkldnn/include)
 
   endif()
 
-  include_directories(3rdparty/mkldnn/include)
-  include_directories(${PROJECT_BINARY_DIR}/3rdparty/mkldnn/include)
   add_definitions(-DUSE_MKL=1)
   add_definitions(-DCUB_MKL=1)
   add_definitions(-DMXNET_USE_MKLDNN=1)
@@ -384,12 +384,14 @@ foreach(var ${C_CXX_INCLUDE_DIRECTORIES})
 endforeach()
 
 include_directories("include")
+if(NOT HUNTER_ENABLED)
 include_directories("3rdparty/mshadow")
 include_directories("3rdparty/nvidia_cub")
 include_directories("3rdparty/tvm/nnvm/include")
 include_directories("3rdparty/tvm/include")
 include_directories("3rdparty/dmlc-core/include")
 include_directories("3rdparty/dlpack/include")
+endif()
 
 # commented out until PR goes through
 #if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dlpack)
@@ -554,6 +556,8 @@ if(USE_CUDNN AND USE_CUDA)
   endif()
 endif()
 
+if(NOT HUNTER_ENABLED)
+
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/cmake)
   add_subdirectory("3rdparty/dmlc-core")
 endif()
@@ -561,6 +565,9 @@ endif()
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mshadow/cmake)
   add_subdirectory("3rdparty/mshadow")
 endif()
+
+endif()
+
 FILE(GLOB_RECURSE SOURCE "src/*.cc" "src/*.h" "include/*.h")
 FILE(GLOB_RECURSE CUDA "src/*.cu" "src/*.cuh")
 
@@ -604,9 +611,11 @@ endif()
 
 list(APPEND SOURCE ${NNVMSOURCE})
 
+if(NOT HUNTER_ENABLED)
 # add mshadow file
 FILE(GLOB_RECURSE MSHADOWSOURCE "3rdparty/mshadow/mshadow/*.h")
 FILE(GLOB_RECURSE MSHADOW_CUDASOURCE "3rdparty/mshadow/mshadow/*.cuh")
+endif()
 list(APPEND SOURCE ${MSHADOWSOURCE})
 list(APPEND CUDA ${MSHADOW_CUDASOURCE})
 
