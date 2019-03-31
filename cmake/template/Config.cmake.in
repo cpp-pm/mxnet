@@ -13,7 +13,6 @@ if(@UNIX@)
   find_package(tvm CONFIG REQUIRED)
   find_package(mshadow CONFIG REQUIRED)
   find_package(cub CONFIG REQUIRED)
-  find_package(mkldnn CONFIG REQUIRED)
   find_package(dlpack CONFIG REQUIRED)
 endif()
 
