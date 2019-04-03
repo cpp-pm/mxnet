@@ -28,5 +28,9 @@ if(@USE_OPENCV@)
   find_package(OpenCV CONFIG REQUIRED)
 endif()
 
+if(APPLE)
+  find_package(accelerate REQUIRED)
+endif()
+
 include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
 check_required_components("@PROJECT_NAME@")
