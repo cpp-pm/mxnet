@@ -939,12 +939,23 @@ install(
 
 ### }
 
-include(GNUInstallDirs)
+set(pip_install_suffix "${CMAKE_INSTALL_LIBDIR}/python/site-packages")
+
+install(
+    DIRECTORY python/
+    DESTINATION ${pip_install_suffix}
+    FILES_MATCHING
+    PATTERN "*"
+    REGEX "\.gitignore$" EXCLUDE
+    REGEX "setup\.py$" EXCLUDE
+    REGEX "README\.md$" EXCLUDE
+)
+
 install(TARGETS ${MXNET_INSTALL_TARGETS}
   EXPORT ${TARGETS_EXPORT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${pip_install_suffix}/mxnet
+  ARCHIVE DESTINATION ${pip_install_suffix}/mxnet
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
