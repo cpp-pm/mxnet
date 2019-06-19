@@ -284,7 +284,7 @@ if(USE_MKLDNN)
   add_definitions(-DMXNET_USE_MKLDNN=1)
 
   if(HUNTER_ENABLED)
-    list(APPEND mxnet_LINKER_LIBS mkldnn::mkldnn)
+    list(APPEND mxnet_LINKER_LIBS MKLDNN::mkldnn)
   else()
 
   list(APPEND mxnet_LINKER_LIBS mkldnn)
@@ -818,7 +818,7 @@ if(UNIX)
     if(USE_MKLDNN)
       hunter_add_package(mkldnn)
       find_package(mkldnn CONFIG REQUIRED)
-      target_link_libraries(mxnet PUBLIC mkldnn::mkldnn)
+      target_link_libraries(mxnet PUBLIC MKLDNN::mkldnn)
     endif()
 
     hunter_add_package(dlpack)
